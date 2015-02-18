@@ -1,0 +1,23 @@
+{
+	"apiVersion": "1.0.0",
+	"swaggerVersion": "1.2",
+	"authorizations": {
+		"influxAuth": {
+			"type": "basicAuth"
+		}
+	},
+	"info": {
+		"title": "Influx DB API",
+		"description": "Influx DB API - Localhost",
+		"termsOfServiceUrl": "Own risk",
+		"contact": "carlos.pedrinaci@open.ac.uk",
+		"license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+		"licenseUrl": "http://creativecommons.org/licenses/by/4.0/"
+	},
+	"apis": [
+		{
+			"path": "/db",
+			"description": "Operations over time series db"
+		}
+	]
+}

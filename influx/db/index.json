@@ -1,0 +1,124 @@
+{
+	"apiVersion": "1.0.0",
+	"swaggerVersion": "1.2",
+	"basePath": "http://localhost:8086",
+	"resourcePath": "/db",
+	"authorizations": {},
+	"produces": [
+	    "application/json"
+	],
+	"apis": [
+		{
+			"path": "/db/{database}/series",
+			"operations": [
+				{
+					"method": "POST",
+					"summary": "Send time series data",
+					"notes": "Posts time series data to be stored on InfluxDB. You can post batches of time points for reducing the requests overhead.",
+					"nickname": "postSeriesData",
+					"type": "void",
+					"authorizations": {
+						"influxAuth" : []
+					},
+					"parameters": [
+						{
+			                "name": "database",
+			                "description": "Database to send the data to.",
+			                "type": "string",
+			                "paramType": "path",
+							"required": true
+						},
+						{
+							"name": "body",
+							"description": "Series time points to submit",
+							"required": true,
+							"type": "array",
+							"items": {
+							    "$ref": "SeriesData"
+							},
+							"paramType": "body"
+						}
+					],
+					"consumes": [
+						"application/json"
+					], 
+					"responseMessages": [
+						{
+							"code": 401,
+							"message": "Acces token not recognised"
+						}
+					]
+				},
+				{
+					"method": "GET",
+					"summary": "Query time series data",
+					"notes": "Submits the query to InfluxDB for evaluation. See the <a href=\"http://influxdb.com/docs/v0.8/api/query_language.html\">query language documentation</a> for further information.",
+					"nickname": "querySeries",
+					"type": "SeriesData",
+					"authorizations": {
+						"influxAuth" : []
+					},
+					"parameters": [
+						{
+			                "name": "database",
+			                "description": "Database to send the data to.",
+			                "type": "string",
+			                "paramType": "path",
+							"required": true
+						},
+						{
+							"name": "q",
+							"description": "Query to evaluate",
+							"required": true,
+							"type": "string",
+							"paramType": "query"
+						}
+					],
+					"consumes": [
+						"application/json"
+					], 
+					"responseMessages": [
+						{
+							"code": 400,
+							"message": "Syntax error"
+						}
+					]
+				}
+			]
+		}
+	],
+	"models": {
+		"SeriesData": {
+			"id": "SeriesData",
+			"description": "Time series data",
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "Time series name."
+				},
+				"columns": {
+					"type": "array",
+					"items": {
+					    "type": "string"
+					},
+					"description": "Time series columns."
+				},
+				"points": {
+					"type": "array",
+					"items": {
+					    "$ref": "DataPoint"
+					},
+					"description": "Data points."
+				}
+			}
+		},
+		"DataPoint": {
+			"id": "DataPoint",
+			"description": "A data point for a time series",
+			"type": "array",
+			"items": {
+			    "type": "string"
+			}
+		}
+	}
+}
